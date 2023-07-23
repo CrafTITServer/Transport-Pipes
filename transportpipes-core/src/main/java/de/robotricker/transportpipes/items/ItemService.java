@@ -50,20 +50,6 @@ public class ItemService {
         wrench.setItemMeta(meta);
         tempConf = new YamlConfiguration();
 
-        Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
-        
-        while(recipeIterator.hasNext()) {
-            Recipe recipe = null;
-
-            try {
-                recipe = recipeIterator.next();
-            }
-            catch(Exception e) { }
-
-            if (recipe != null)
-                recipeList.add(recipe);
-        }
-
         this.transportPipes = transportPipes;
     }
 
@@ -285,6 +271,22 @@ public class ItemService {
     }
 
     public static boolean isFurnaceBurnableItem(BlockState blockState, ItemStack item) {
+        if(recipeList == null) {
+            Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
+        
+            while(recipeIterator.hasNext()) {
+                Recipe recipe = null;
+
+                try {
+                    recipe = recipeIterator.next();
+                }
+                catch(Exception e) { }
+
+                if (recipe != null)
+                    recipeList.add(recipe);
+            }
+        }
+        
         for (Recipe recipe : recipeList) {
             if (blockState instanceof BlastFurnace) {
                 if (!(recipe instanceof BlastingRecipe)) continue;
