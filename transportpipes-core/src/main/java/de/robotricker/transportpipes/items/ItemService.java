@@ -36,6 +36,7 @@ public class ItemService {
     private ItemStack wrench;
     private final YamlConfiguration tempConf;
     private final TransportPipes transportPipes;
+    private static List<Recipe> recipeList;
 
     @Inject
     public ItemService(GeneralConf generalConf, TransportPipes transportPipes) {
@@ -48,7 +49,21 @@ public class ItemService {
         Objects.requireNonNull(meta).setCustomModelData(133744);
         wrench.setItemMeta(meta);
         tempConf = new YamlConfiguration();
+
+        Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
         
+        while(recipeIterator.hasNext()) {
+            Recipe recipe = null;
+
+            try {
+                recipe = recipeIterator.next();
+            }
+            catch(Exception e) { }
+
+            if (recipe != null)
+                recipeList.add(recipe);
+        }
+
         this.transportPipes = transportPipes;
     }
 
@@ -270,10 +285,7 @@ public class ItemService {
     }
 
     public static boolean isFurnaceBurnableItem(BlockState blockState, ItemStack item) {
-
-        Iterator<Recipe> recipeIt = Bukkit.recipeIterator();
-        while (recipeIt.hasNext()) {
-            Recipe recipe = recipeIt.next();
+        for (Recipe recipe : recipeList) {
             if (blockState instanceof BlastFurnace) {
                 if (!(recipe instanceof BlastingRecipe)) continue;
                 if (!((BlastingRecipe) recipe).getInputChoice().test(item)) continue;
