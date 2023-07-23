@@ -17,7 +17,7 @@
         <module>transportpipes-core</module>
         <module>transportpipes-1_16_5</module>
         <module>transportpipes-1_17</module>
-        <module>transportpipes-1_17_1</module>
+        <!--module>transportpipes-1_17_1</module-->
         <module>transportpipes-1_19</module>
         <module>transportpipes-1_19_3</module>
         <module>transportpipes-1_19_4</module>
@@ -181,6 +181,11 @@
     </build>
 
     <repositories>
+        <!-- PaperMC -->
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
         <!-- ProtocolLib -->
         <repository>
             <id>dmulloy2-repo</id>
