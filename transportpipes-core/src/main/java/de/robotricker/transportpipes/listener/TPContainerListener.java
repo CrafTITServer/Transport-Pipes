@@ -16,6 +16,8 @@ import de.robotricker.transportpipes.duct.pipe.Pipe;
 import de.robotricker.transportpipes.location.BlockLocation;
 import de.robotricker.transportpipes.location.TPDirection;
 import de.robotricker.transportpipes.utils.WorldUtils;
+import io.papermc.paper.event.block.BlockBreakBlockEvent;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.block.*;
@@ -50,6 +52,11 @@ public class TPContainerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+        notifyBlockUpdate(event.getBlock(), false);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onBlockBreak(BlockBreakBlockEvent event) {
         notifyBlockUpdate(event.getBlock(), false);
     }
 

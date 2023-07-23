@@ -41,15 +41,15 @@ public class ProtectionUtils implements Listener {
             return false;
         }
 
-        Block fakeBlock;
+        /*Block fakeBlock;
         try {
             fakeBlock = transportPipes.getFakeBlock(block.getWorld(), block.getLocation(), Material.HOPPER);
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
             return false;
-        }
+        }*/
 
-        BuildPermissionEvent event = new BuildPermissionEvent(fakeBlock, block.getState(), block.getRelative(BlockFace.DOWN), item, player, true, hand);
+        BuildPermissionEvent event = new BuildPermissionEvent(block, block.getState(), block.getRelative(BlockFace.DOWN), item, player, true, hand);
         callEventWithoutAntiCheat(event);
 
         return event.isAllowed();
@@ -60,15 +60,15 @@ public class ProtectionUtils implements Listener {
             return false;
         }
 
-        Block fakeBlock;
+        /*Block fakeBlock;
         try {
             fakeBlock = transportPipes.getFakeBlock(block.getWorld(), block.getLocation(), Material.HOPPER);
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
             return false;
-        }
+        }*/
 
-        BreakPermissionEvent event = new BreakPermissionEvent(fakeBlock, player);
+        BreakPermissionEvent event = new BreakPermissionEvent(block, player);
         callEventWithoutAntiCheat(event);
 
         return event.isAllowed();
@@ -104,7 +104,7 @@ public class ProtectionUtils implements Listener {
                 permissionEvent.setAllowed(false);
             }
             else {
-                permissionEvent.setCancelled(true);
+                event.setCancelled(true);
             }
         }
     }

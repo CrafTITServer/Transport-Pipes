@@ -20,6 +20,7 @@ import de.robotricker.transportpipes.utils.WorldUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
@@ -205,7 +206,12 @@ public class DuctListener implements Listener {
                 if (clickedDuct != null && itemService.isWrench(interaction.item) && interaction.player.isSneaking()) {
                     // Wrench sneak click
                     Block ductBlock = clickedDuct.getBlockLoc().toBlock(interaction.player.getWorld());
-                    if (protectionUtils.canBreak(interaction.player, ductBlock)) {
+                    BlockState clickedState = ductBlock.getState();
+                    clickedState.setType(Material.HOPPER);
+
+                    Block clickedBlock = clickedState.getBlock();
+
+                    if (protectionUtils.canBreak(interaction.player, clickedBlock)) {
                         Block relativeBlock = HitboxUtils.getRelativeBlockOfDuct(globalDuctManager, interaction.player, ductBlock);
                         TPDirection clickedDir = TPDirection.fromBlockFace(ductBlock.getFace(Objects.requireNonNull(relativeBlock)));
                         Duct relativeDuct = clickedDuct.getDuctConnections().get(clickedDir);
@@ -235,7 +241,13 @@ public class DuctListener implements Listener {
                 if (clickedDuct != null && !manualPlaceable &&
                         (itemService.isWrench(interaction.item) || (!generalConf.getWrenchRequired() && !canBeUsedToObfuscate(interaction.item.getType())))) {
                     //wrench click
-                    if (protectionUtils.canBreak(interaction.player, clickedDuct.getBlockLoc().toBlock(interaction.player.getWorld()))) {
+
+                    BlockState clickedState = clickedDuct.getBlockLoc().toBlock(interaction.player.getWorld()).getState();
+                    clickedState.setType(Material.HOPPER);
+
+                    Block clickedBlock = clickedState.getBlock();
+
+                    if (protectionUtils.canBreak(interaction.player, clickedBlock)) {
                         clickedDuct.notifyClick(interaction.player, interaction.player.isSneaking());
                     }
 
@@ -381,7 +393,7 @@ public class DuctListener implements Listener {
                         BlockData blockData = interaction.item.getType().createBlockData();
 
                         // Create a fake block from new blockdata to test build permissions
-                        Block fakeBlock;
+                        /*Block fakeBlock;
                         try {
                             fakeBlock = transportPipes.getFakeBlock(relativeBlock.getWorld(), relativeBlock.getLocation(), interaction.item.getType());
                         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
@@ -389,9 +401,9 @@ public class DuctListener implements Listener {
                             return;
                         }
 
-                        fakeBlock.setBlockData(blockData, false);
+                        fakeBlock.setBlockData(blockData, false);*/
 
-                        if (protectionUtils.canBuild(interaction.player, fakeBlock, interaction.item, interaction.hand)) {
+                        if (protectionUtils.canBuild(interaction.player, interaction.clickedBlock, interaction.item, interaction.hand)) {
                             // Copy the original blockdata from placed block's location (typically air)
                             BlockData oldBlockData = relativeBlock.getBlockData().clone();
 
@@ -462,7 +474,13 @@ public class DuctListener implements Listener {
             // duct destruction
             if (clickedDuct != null) {
                 BlockLocation clickedDuctLocation = clickedDuct.getBlockLoc();
-                if (protectionUtils.canBreak(interaction.player, clickedDuctLocation.toBlock(interaction.player.getWorld()))) {
+                
+                BlockState clickedState = clickedDuctLocation.toBlock(interaction.player.getWorld()).getState();
+                clickedState.setType(Material.HOPPER);
+
+                Block clickedBlock = clickedState.getBlock();
+                
+                if (protectionUtils.canBreak(interaction.player, clickedBlock)) {
                     globalDuctManager.unregisterDuct(clickedDuct);
                     globalDuctManager.unregisterDuctInRenderSystem(clickedDuct, true);
                     globalDuctManager.updateNeighborDuctsConnections(clickedDuct);
