@@ -49,8 +49,7 @@ public class ItemService {
         Objects.requireNonNull(meta).setCustomModelData(133744);
         wrench.setItemMeta(meta);
         tempConf = new YamlConfiguration();
-        recipeList = new ArrayList<Recipe>();
-
+        
         this.transportPipes = transportPipes;
     }
 
@@ -273,6 +272,7 @@ public class ItemService {
 
     public static boolean isFurnaceBurnableItem(BlockState blockState, ItemStack item) {
         if(recipeList == null) {
+            recipeList = new ArrayList<Recipe>();
             Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
         
             while(recipeIterator.hasNext()) {
