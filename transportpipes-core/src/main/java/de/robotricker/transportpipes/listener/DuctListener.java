@@ -403,7 +403,7 @@ public class DuctListener implements Listener {
 
                         fakeBlock.setBlockData(blockData, false);*/
 
-                        if (protectionUtils.canBuild(interaction.player, interaction.clickedBlock, interaction.item, interaction.hand)) {
+                        if (protectionUtils.canBuild(interaction.player, clickedDuct.getBlockLoc().toBlock(relativeBlock.getWorld()), interaction.item, interaction.hand)) {
                             // Copy the original blockdata from placed block's location (typically air)
                             BlockData oldBlockData = relativeBlock.getBlockData().clone();
 
