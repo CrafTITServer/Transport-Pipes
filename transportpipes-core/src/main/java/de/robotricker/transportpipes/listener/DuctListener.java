@@ -206,12 +206,8 @@ public class DuctListener implements Listener {
                 if (clickedDuct != null && itemService.isWrench(interaction.item) && interaction.player.isSneaking()) {
                     // Wrench sneak click
                     Block ductBlock = clickedDuct.getBlockLoc().toBlock(interaction.player.getWorld());
-                    BlockState clickedState = ductBlock.getState();
-                    clickedState.setType(Material.HOPPER);
-
-                    Block clickedBlock = clickedState.getBlock();
-
-                    if (protectionUtils.canBreak(interaction.player, clickedBlock)) {
+                    
+                    if (protectionUtils.canBreak(interaction.player, ductBlock)) {
                         Block relativeBlock = HitboxUtils.getRelativeBlockOfDuct(globalDuctManager, interaction.player, ductBlock);
                         TPDirection clickedDir = TPDirection.fromBlockFace(ductBlock.getFace(Objects.requireNonNull(relativeBlock)));
                         Duct relativeDuct = clickedDuct.getDuctConnections().get(clickedDir);
@@ -242,11 +238,8 @@ public class DuctListener implements Listener {
                         (itemService.isWrench(interaction.item) || (!generalConf.getWrenchRequired() && !canBeUsedToObfuscate(interaction.item.getType())))) {
                     //wrench click
 
-                    BlockState clickedState = clickedDuct.getBlockLoc().toBlock(interaction.player.getWorld()).getState();
-                    clickedState.setType(Material.HOPPER);
-
-                    Block clickedBlock = clickedState.getBlock();
-
+                    Block clickedBlock = clickedDuct.getBlockLoc().toBlock(interaction.player.getWorld());
+                    
                     if (protectionUtils.canBreak(interaction.player, clickedBlock)) {
                         clickedDuct.notifyClick(interaction.player, interaction.player.isSneaking());
                     }
@@ -474,11 +467,7 @@ public class DuctListener implements Listener {
             // duct destruction
             if (clickedDuct != null) {
                 BlockLocation clickedDuctLocation = clickedDuct.getBlockLoc();
-                
-                BlockState clickedState = clickedDuctLocation.toBlock(interaction.player.getWorld()).getState();
-                clickedState.setType(Material.HOPPER);
-
-                Block clickedBlock = clickedState.getBlock();
+                Block clickedBlock = clickedDuctLocation.toBlock(interaction.player.getWorld());
                 
                 if (protectionUtils.canBreak(interaction.player, clickedBlock)) {
                     globalDuctManager.unregisterDuct(clickedDuct);

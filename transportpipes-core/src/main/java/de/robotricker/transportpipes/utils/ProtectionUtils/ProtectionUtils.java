@@ -68,6 +68,10 @@ public class ProtectionUtils implements Listener {
             return false;
         }*/
 
+        if (block.getType() == Material.AIR) {
+            block = block.getWorld().getHighestBlockAt(block.getLocation());
+        }
+
         BreakPermissionEvent event = new BreakPermissionEvent(block, player);
         callEventWithoutAntiCheat(event);
 
