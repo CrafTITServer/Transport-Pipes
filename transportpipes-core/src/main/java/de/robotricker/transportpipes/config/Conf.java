@@ -91,12 +91,6 @@ public class Conf {
         saveToFileSync();
     }
 
-    public void overrideAsync(String key, Object value) {
-        cachedValues.put(key, value);
-        yamlConf.set(key, value);
-        Bukkit.getScheduler().runTaskAsynchronously(configPlugin, this::saveToFileSync);
-    }
-
     public Object read(String key) {
         if (cachedValues.containsKey(key)) {
             return cachedValues.get(key);

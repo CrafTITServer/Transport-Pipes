@@ -23,7 +23,7 @@ public class PlayerSettingsConf extends Conf {
     }
 
     public void setRenderDistance(int renderDistance) {
-        overrideAsync("render_distance", renderDistance);
+        overrideSync("render_distance", renderDistance);
     }
 
     public String getRenderSystemName() {
@@ -34,7 +34,7 @@ public class PlayerSettingsConf extends Conf {
     }
 
     public void setRenderSystemName(String name) {
-        overrideAsync("render_system", name);
+        overrideSync("render_system", name);
     }
 
     public RenderSystem getRenderSystem(BaseDuctType<? extends Duct> baseDuctType) {
@@ -49,7 +49,7 @@ public class PlayerSettingsConf extends Conf {
     }
 
     public void setShowItems(boolean showItems) {
-        overrideAsync("show_items", showItems ? 1 : 0);
+        overrideSync("show_items", showItems ? 1 : 0);
     }
 
 }
