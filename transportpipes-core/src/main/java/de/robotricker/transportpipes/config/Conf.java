@@ -19,7 +19,7 @@ public class Conf {
 
     private final Plugin configPlugin;
     private Path configFile;
-    private final YamlConfiguration yamlConf;
+    private YamlConfiguration yamlConf;
     private final Map<String, Object> cachedValues = new HashMap<>();
 
     /**
@@ -37,7 +37,7 @@ public class Conf {
             if (Files.isRegularFile(finalConfigFile)) {
                 YamlConfiguration oldConf = YamlConfiguration.loadConfiguration(finalConfigFile.toFile());
                 valuesBefore.putAll(oldConf.getValues(true));
-                Files.delete(finalConfigFile);
+                Files.deleteIfExists(finalConfigFile);
             }
 
             InputStream is = configPlugin.getResource(jarConfigName);
@@ -46,6 +46,7 @@ public class Conf {
             if (is == null) {
                 Bukkit.getLogger().log(Level.SEVERE, "InputStream is null for config " + jarConfigName + ".");
                 Bukkit.getLogger().log(Level.SEVERE, "Unable to copy bytes to " + finalConfigFile + ".");
+                return;
             }
             else{
                 Files.copy(is, finalConfigFile);
@@ -74,11 +75,10 @@ public class Conf {
             newConf.save(finalConfigFile.toFile());
 
             this.configFile = finalConfigFile;
+            this.yamlConf = YamlConfiguration.loadConfiguration(configFile.toFile());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        this.yamlConf = YamlConfiguration.loadConfiguration(configFile.toFile());
     }
 
     protected YamlConfiguration getYamlConf() {
